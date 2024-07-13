@@ -1,142 +1,283 @@
+Episode -04 (Talk is cheap, show me the code)
 
-we can scripts the code in package.json , how we can execute, like
-```js
- "scripts": {
-    "start": "parcel index.html",
-    "build": "parcel build index.html",
-    "test": "jest"
+we cand write inline css in JSX but, we have create component and then put into paranthesis
+
+```
+const StyleCard = {
+  backgroundcolor: "#fofofo"
+};
+<div   style= {StyleCard}> </div>
 ```
 
-npm start = npm run start (start is reserved by npm)
-npm build not equal to npm run build (but here it wont work)
 
----
-``` React.js
-import React from "react";
-import ReactDOM from "react-dom/client";
+We have to plan  before we start to build, like how the structure will look like
+what are the things comes inside
 
-// React.createElement -> ReactElement-JS Object -> HTMLElement(render)
+/* PLANNING
+Header
+- logo
+- Navigation items
+Body
+ - search
+ - Restaurant container
+   - restaurant list
+     - restaurant card
+       - restaurant name
+       - restaurant star rating
+       - restaurant cuisines
+       - restaurant review count
+       - restaurant price range
+       - restaurant image
+       - delivery time
+   - pagination
+Footer
+ - social media icons
+ - copyright notice
+ - links
+ - address
+ - contact
+ */
 
-Using core react
-
-const heading = React.createElement("h1", { id: "heading" }, "Namaste React"); console.log(heading);
-
-
-//JSX (transpiled before it reaches the JS Engine) - PARCEL - Babel
-//JSX(Babel transpile) -> React.createElement -> ReactElement-JS Object -> 
-HTMLElement(render)
-
-Using JSX
-
-const jsxheading = (<h1 id="heading"> Namaste react </h1>,
-<h2> heading two </h2>);
-const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(jsxheading);
+  Then we have to start buidling the app
+  // Page Layout 
+  ```js
+  const AppLayout = () => (
+  <div className="app">
+    <Header />
+    <Body />
+  </div>
+);
 ```
 
-JSX is a javascript syntax, which is easier to create React Elements
-
-JSX  is not a part of react, we can write react without jsx also but it will make easy
-it will help to merge JS and html
-jsx is not html inside JS,  jsx is html like syntax.
-
-when we console both heading and jsxheading -> both create object
-![[Pasted image 20240711211943.png]]
-
-
-```//JSX (transpiled before it reaches the JS Engine) - PARCEL - Babel
-//JSX(Babel transpile) -> React.createElement -> ReactElement-JS Object -> 
-HTMLElement(render)
+Then header,
+``` js
+const Header = () => (
+  <div className="header">
+    <div className="logo-container">
+      <img
+       className="logo"
+  src="https://fbcd.co/images/products/4d8390472d71fd01cb4c2bcbf90a43ec_resize.jpg"
+      />
+    </div>
+    <nav className="nav-items">
+      <ul>
+        <li>Home</li>
+        <li>About</li>
+        <li>Menu</li>
+        <li>Contact</li>
+      </ul>
+    </nav>
+  </div>
+);
+```
+Then body,
+const Body = () => (
+``` js
+const Body = () => (
+  <div className="body">
+    <div className="search-container">
+      <input type="text" placeholder="Search for restaurants" />
+    </div>
+    <div className="restaurant-container">
+      <RestaurantCard />
+      <RestaurantCard />
+    </div>
+  </div>
+);
 ```
 
-[[babel]]  -  https://babeljs.io/
-
-
-Some common practice is  giving instruction in root like this, it will show us rendered or not.
+create separate component will be helpful in handling many data's
+So we create separate Restaurant components 
 
 ``` js
-<div id="root">
-      <h1>This will be replaced by react code </h1>
+const RestaurantCard = () => (
+  <div className="restaurant-cards">
+    <img
+      className="res-logo"
+      alt="res-logo"
+      src="https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_660/uwi6yfxyww0i7r9erj68"
+    />
+    <h3>Lassi House</h3>
+    <h4>Briyani, Naatu kozhi,</h4>
+    <h4>4.4 stars</h4>
+    <h4>38 minutes</h4>
+  </div>
+);
+```
+
+To build a Dynamic we need to know Props (Properties), which is nothing but arguments 
+passing argument in function (passing props into react component)
+
+Aftere passing, which hold the object data
+![[Pasted image 20240713150820.png]]
+
+```
+const RestaurantCard = (props) => {}
+ <h3>{props.resName}</h3>
+```
+
+it will dynamically give result
+![[Pasted image 20240713151601.png|500]]
+
+Confi driven UI- our website is driven by data comes from backend
+
+Fetched data from swiggy 
+
+const resObj = {
+
+  info: {
+
+    id: "440729",
+
+    name: "Pallavaran Yaa Mohaideen Biriyani",
+
+    cloudinaryImageId: "uoubsptehcwwgipkoxth",
+
+    locality: "Trichy Main Road",
+
+    areaName: "Viluppuram Town",
+
+    costForTwo: "₹400 for two",
+
+    cuisines: ["Biryani", "Tandoor", "Chinese", "Indian", "South Indian"],
+
+    avgRating: 4.3,
+
+    parentId: "269276",
+
+    avgRatingString: "4.3",
+
+    totalRatingsString: "1K+",
+
+    sla: {
+
+      deliveryTime: 15,
+
+      lastMileTravel: 1.8,
+
+      serviceability: "SERVICEABLE",
+
+      slaString: "15-20 mins",
+
+      lastMileTravelString: "1.8 km",
+
+      iconType: "ICON_TYPE_EMPTY",
+
+    },
+
+    availability: {
+
+      nextCloseTime: "2024-07-13 22:00:00",
+
+      opened: true,
+
+    },
+
+    badges: {},
+
+    isOpen: true,
+
+    aggregatedDiscountInfoV2: {},
+
+    type: "F",
+
+    badgesV2: {
+
+      entityBadges: {
+
+        imageBased: {},
+
+        textBased: {},
+
+        textExtendedBadges: {},
+
+      },
+
+    },
+
+    orderabilityCommunication: {
+
+      title: {},
+
+      subTitle: {},
+
+      message: {},
+
+      customIcon: {},
+
+    },
+
+    differentiatedUi: {
+
+      displayType: "ADS_UI_DISPLAY_TYPE_ENUM_DEFAULT",
+
+      differentiatedUiMediaDetails: {
+
+        mediaType: "ADS_MEDIA_ENUM_IMAGE",
+
+        lottie: {},
+
+        video: {},
+
+      },
+
+    },
+
+    reviewsSummary: {},
+
+    displayType: "RESTAURANT_DISPLAY_TYPE_DEFAULT",
+
+    restaurantOfferPresentationInfo: {},
+
+    externalRatings: {
+
+      aggregatedRating: {
+
+        rating: "--",
+
+      },
+
+    },
+
+    ratingsDisplayPreference: "RATINGS_DISPLAY_PREFERENCE_SHOW_SWIGGY",
+
+  },
+
+  analytics: {
+
+    context: "seo-data-de015ca1-9a8f-4be8-b7b4-11aba5757698",
+
+  },
+
+  cta: {
+
+    link: "https://www.swiggy.com/restaurants/pallavaran-yaa-mohaideen-biriyani-trichy-main-road-viluppuram-town-viluppuram-440729",
+
+    text: "RESTAURANT_MENU",
+
+    type: "WEBLINK",
+
+  },
+
+  widgetId: "collectionV5RestaurantListWidget_SimRestoRelevance_food_seo",
+
+};
+
+Then passed as a props into the restaurant-card
+```
+<div className="restaurant-container">
+
+      <RestaurantCard resData={resObj} />
+
     </div>
 ```
 
-If we write jsx in multipile line use bracket
-``` js
-const jsxheading = (<h1 id="heading"> Namaste react </h1>,
-<h2> heading two </h2>);
 ```
+const RestaurantCard = (props) => {
 
-**React Component**
-   - class based component - old way of writing component
-   - Functional component - new way of writing component
+  // destructed way is best
 
-React Functional component - Using JavaScript functions we will create components .
-we have to create by starting capital letter
-### which is normal javascript function which returns a jsx element 
+  // const { resName, cuisine } = props;
 
-``` js
-const fn = () => true;
-const fn2 = () => {
-  return true;
-};
+  const { resData } = props;}
 ```
-both are same, we can use either way.
-
-Heading component
-```
-const HeadingComponent = () => <h1 id="heading"> Namaste react </h1>;
-```
-
-```
-const HeadingComponent = () => (
-<div>
-<h1 id="heading"> Namaste react </h1>
-  </div>);
-```
-
-components rendered like this 
-
-```
-<HeadingComponent/>
-```
-
-``` js
-const HeadingComponent = () => (
-<div>
-<h1 id="heading"> Functional component</h1>
-  </div>);
-  root.render(<HeadingComponent />);
-  console.log(HeadingComponent);
-```
-
-we can use another component into one component
-```js
-const Title = () => <h1>Title of the component</h1>;
-const HeadingComponent = () => (
-   <div id = "container">
-  <Title />
-  <h1 id="heading">Heading component</h1>
-<h1 id="heading"> Functional component</h1>
-  </div>);
-```
-
-Even we can put react element into the component 
-and 
-we can use { } bracket we can use javascript inside directly (we can use any expression)
-
-``` JS
-const HeadingComponent = () => (
-   <div id = "container">
-  <Title />
-  <h1 id="heading">Heading component</h1>
-  <h2> {200+300} </h2>
-<h1 id="heading"> Functional component</h1>
-  </div>);
-```
-
-```
-<Title />
-<Title></Title>
-{Title()}
-```
- even we can call function like this
