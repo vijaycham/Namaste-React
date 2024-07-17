@@ -5,7 +5,7 @@
 }
 
 .logo {
-  width: 150px;
+  width: 80px;
 }
 
 .nav-items ul  {
@@ -44,5 +44,7 @@
     cursor: pointer;
   }
 .res-logo {
-  width: 190px;
+  width: 200px;
+  height: 200px;
+  object-fit: cover;  
 }
