@@ -48,3 +48,9 @@
   height: 200px;
   object-fit: cover;  
 }
+
+ .filter-btn {
+   display: flex;
+   cursor: pointer;
+  margin: 10px;
+ }
